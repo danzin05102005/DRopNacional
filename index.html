@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DropNacional - Entrega Rápida</title>
     <style>
-        /* --- CSS DA PRIMEIRA VERSÃO --- */
+        /* --- CSS DA PRIMEIRA VERSÃO (VERDE E CINZA) --- */
         :root {
             --primary-color: #2ecc71; /* Verde original */
             --dark-color: #333;
@@ -47,12 +47,14 @@
         nav ul li { margin-left: 20px; }
         nav a { text-decoration: none; color: var(--dark-color); font-weight: 500; }
         
-        .cart-btn {
-            background: var(--dark-color);
+        .whatsapp-link {
+            background: #25D366; /* Cor do Zap */
             color: #fff;
             padding: 8px 15px;
-            border-radius: 5px;
+            border-radius: 20px;
             text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
         }
 
         /* Banner Hero Original */
@@ -83,7 +85,7 @@
         }
         .btn:hover { background: #27ae60; }
 
-        /* Vantagens (Restaurado) */
+        /* Vantagens (Atualizado para PIX) */
         .features {
             display: flex;
             justify-content: space-around;
@@ -92,6 +94,7 @@
             flex-wrap: wrap;
         }
         .feature-box { text-align: center; max-width: 300px; margin: 10px; }
+        .feature-box h3 { margin-bottom: 10px; color: var(--dark-color); }
 
         /* Produtos */
         .products { padding: 50px 0; }
@@ -118,12 +121,12 @@
 
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-        /* CORREÇÃO DA IMAGEM (Bug resolvido) */
+        /* IMAGEM CORRIGIDA (Não estica) */
         .product-img {
             width: 100%;
             height: 250px;
             background-color: #fff;
-            object-fit: contain; /* Isso impede que a imagem fique esticada */
+            object-fit: contain; 
             padding: 10px; 
             box-sizing: border-box;
         }
@@ -135,15 +138,17 @@
             display: block;
             width: 100%;
             padding: 10px;
-            background: var(--dark-color);
+            background: #25D366; /* Verde Zap */
             color: white;
             border: none;
             cursor: pointer;
             text-decoration: none;
             text-align: center;
             box-sizing: border-box;
+            border-radius: 5px;
+            font-weight: bold;
         }
-        .buy-btn:hover { background: var(--primary-color); }
+        .buy-btn:hover { background: #128C7E; }
 
         /* Rodapé */
         footer {
@@ -163,44 +168,44 @@
             <nav>
                 <ul>
                     <li><a href="index.html">Início</a></li>
-                    <li><a href="admin.html">Admin</a></li>
-                    <li><a href="#" class="cart-btn">Carrinho (0)</a></li>
+                    <li><a href="admin.html">Área Admin</a></li>
+                    <li><a href="#" class="whatsapp-link" id="btn-topo-zap">Fale Conosco</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
     <section class="hero">
-        <h1>Produtos Nacionais sem Taxas</h1>
-        <p>Receba em casa em até 7 dias úteis. Estoque no Brasil.</p>
+        <h1>Produtos Nacionais</h1>
+        <p>Estoque no Brasil. Negocie direto pelo WhatsApp.</p>
         <a href="#produtos" class="btn">Ver Ofertas</a>
     </section>
 
     <section class="features">
         <div class="feature-box">
             <h3>🚚 Entrega Rápida</h3>
-            <p>Nada de esperar 30 dias. Nossos produtos já estão no Brasil.</p>
+            <p>Produtos já no Brasil. Chega rapidinho na sua casa.</p>
         </div>
         <div class="feature-box">
-            <h3>🛡️ Sem Taxas</h3>
-            <p>Livre de impostos de importação surpresa.</p>
+            <h3>🛡️ Compra Segura</h3>
+            <p>Atendimento humanizado e garantia de entrega.</p>
         </div>
         <div class="feature-box">
-            <h3>💳 Parcelamento Fácil</h3>
-            <p>Aceitamos Pix e cartão em até 12x.</p>
+            <h3>💸 Pagamento via Pix</h3>
+            <p>Pague com segurança e agilidade na transferência.</p>
         </div>
     </section>
 
     <section id="produtos" class="products">
-        <h2 class="section-title">Mais Vendidos</h2>
+        <h2 class="section-title">Disponíveis Agora</h2>
         
         <div class="product-grid" id="grid-produtos">
-            <p style="text-align:center; width:100%;">Carregando produtos...</p>
+            <p style="text-align:center; width:100%;">Carregando catálogo...</p>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2024 DropNacional. Todos os direitos reservados.</p>
+        <p>&copy; 2024 DropNacional. Vendas exclusivas via WhatsApp.</p>
     </footer>
 
     <script type="module">
@@ -221,7 +226,13 @@
         const db = getFirestore(app);
         const productContainer = document.getElementById('grid-produtos');
 
-        // Busca em Tempo Real
+        // --- SEU NÚMERO AQUI (Fixo) ---
+        const seuNumero = "5511999999999"; 
+
+        // Configura o botão do topo "Fale Conosco"
+        document.getElementById('btn-topo-zap').href = `https://wa.me/${seuNumero}`;
+
+        // Busca Produtos
         onSnapshot(collection(db, "produtos"), (snapshot) => {
             productContainer.innerHTML = '';
 
@@ -233,11 +244,8 @@
             snapshot.forEach((doc) => {
                 const produto = doc.data();
                 
-                // --- ATENÇÃO: COLOQUE SEU NÚMERO AQUI ---
-                const seuNumero = "5511999999999"; 
-                
-                // Mensagem do WhatsApp
-                const linkZap = `https://wa.me/${seuNumero}?text=Olá, quero comprar o ${produto.nome}`;
+                // Mensagem personalizada: "Gostaria de pagar no Pix"
+                const linkZap = `https://wa.me/${seuNumero}?text=Olá, tenho interesse no *${produto.nome}* de R$ ${produto.preco}. Aceita Pix?`;
 
                 const htmlProduto = `
                     <div class="product-card">
@@ -246,7 +254,7 @@
                             <h3>${produto.nome}</h3>
                             <p>${produto.descricao || ''}</p>
                             <div class="price">R$ ${produto.preco}</div>
-                            <a href="${linkZap}" target="_blank" class="buy-btn">Comprar Agora</a>
+                            <a href="${linkZap}" target="_blank" class="buy-btn">Pedir no WhatsApp</a>
                         </div>
                     </div>
                 `;
