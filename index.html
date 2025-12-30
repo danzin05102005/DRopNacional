@@ -52,6 +52,7 @@
             padding: 8px 15px;
             border-radius: 20px;
             font-size: 0.9rem;
+            text-decoration: none;
         }
 
         /* Hero Banner */
@@ -95,11 +96,14 @@
 
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
 
+        /* --- CORREÇÃO DA IMAGEM AQUI --- */
         .product-img {
             width: 100%;
-            height: 250px;
-            background-color: #eee;
-            object-fit: cover;
+            height: 250px; /* Mantém a altura fixa para alinhar os cards */
+            background-color: #fff; /* Fundo branco caso sobre espaço */
+            object-fit: contain; /* MÁGICA: Garante que a imagem inteira apareça sem esticar */
+            padding: 10px; /* Um pequeno respiro nas bordas */
+            box-sizing: border-box; /* Garante que o padding não aumente o tamanho total */
         }
 
         .product-info { padding: 20px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
@@ -121,7 +125,7 @@
             border-radius: 5px;
             font-weight: bold;
             transition: background 0.3s;
-            box-sizing: border-box; /* Garante que padding não estoure */
+            box-sizing: border-box;
         }
         .buy-btn:hover { background: #128C7E; }
 
@@ -164,15 +168,13 @@
     </section>
 
     <footer>
-        <p>&copy; 2025 DropNacional. Todos os direitos reservados.</p>
+        <p>&copy; 2024 DropNacional. Todos os direitos reservados.</p>
     </footer>
 
     <script type="module">
-        // Importa Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-        // SUA CONFIGURAÇÃO
         const firebaseConfig = {
             apiKey: "AIzaSyB38-4e3QhkeSvQ8764wP2iY_Z4JnZujOI",
             authDomain: "dropnacional-f9a23.firebaseapp.com",
@@ -182,43 +184,37 @@
             appId: "1:454427040908:web:59d4f096b488a0d3ce6fa9"
         };
 
-        // Inicializa
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Onde vamos colocar os produtos
         const productContainer = document.getElementById('grid-produtos');
 
         async function carregarProdutos() {
             try {
-                // Pega a coleção "produtos"
                 const querySnapshot = await getDocs(collection(db, "produtos"));
                 
-                // Limpa o texto de carregando
                 productContainer.innerHTML = '';
 
                 if (querySnapshot.empty) {
-                    productContainer.innerHTML = `<p style="text-align:center; width:100%">Nenhum produto cadastrado no banco ainda.</p>`;
+                    productContainer.innerHTML = `<p style="text-align:center; width:100%; padding: 20px;">Nenhum produto cadastrado no banco ainda.</p>`;
                     return;
                 }
 
                 querySnapshot.forEach((doc) => {
                     const produto = doc.data();
 
-                    // --- IMPORTANTE: CONFIGURAÇÃO DO WHATSAPP ---
-                    // Troque o número abaixo pelo seu (Use 55 + DDD + Numero)
-                    const seuNumero = "5512992289185"; 
+                    // --- SEU NÚMERO AQUI ---
+                    const seuNumero = "5511999999999"; 
                     
-                    // Cria a mensagem automática
                     const mensagem = `Olá, vi o produto *${produto.nome}* no site por R$ ${produto.preco} e gostaria de comprar!`;
-                    
-                    // Cria o link final (codifica os espaços e caracteres especiais)
                     const linkZap = `https://wa.me/${seuNumero}?text=${encodeURIComponent(mensagem)}`;
 
-                    // Cria o HTML
+                    // Usei uma imagem de placeholder quadrada caso não tenha imagem no banco, para testar o layout
+                    const imagemSrc = produto.imagem || 'https://via.placeholder.com/300x300?text=Sem+Foto';
+
                     const htmlProduto = `
                         <div class="product-card">
-                            <img src="${produto.imagem || 'https://via.placeholder.com/300?text=Sem+Foto'}" alt="${produto.nome}" class="product-img">
+                            <img src="${imagemSrc}" alt="${produto.nome}" class="product-img">
                             <div class="product-info">
                                 <div>
                                     <h3>${produto.nome}</h3>
