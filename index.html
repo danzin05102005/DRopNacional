@@ -3,172 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DropNacional - Ofertas Exclusivas</title>
+    <title>DropNacional - Ofertas</title>
     <style>
         /* --- CSS (DESIGN) --- */
         :root {
-            --primary-color: #2ecc71; /* Verde WhatsApp */
+            --primary-color: #2ecc71;
             --dark-color: #333;
             --bg-color: #f8f9fa;
         }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: #333;
-        }
-
-        /* Cabeçalho */
-        header {
-            background: #fff;
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background-color: var(--bg-color); color: #333; }
+        
+        /* Header */
+        header { background: #fff; padding: 1rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        .container { width: 90%; max-width: 1200px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 1.5rem; font-weight: 800; color: var(--dark-color); }
         .logo span { color: var(--primary-color); }
-
         nav ul { display: flex; list-style: none; padding: 0; margin: 0; }
         nav ul li { margin-left: 20px; }
         nav a { text-decoration: none; color: var(--dark-color); font-weight: 600; }
         
-        .whatsapp-btn-header {
-            background-color: #25D366;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            text-decoration: none;
-        }
-
-        /* Hero Banner */
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://source.unsplash.com/random/1600x900/?brazil,delivery');
-            background-size: cover;
-            background-position: center;
-            height: 300px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: #fff;
-        }
-        .hero h1 { font-size: 2.5rem; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .hero p { font-size: 1.2rem; margin-top: 10px; }
+        /* Hero */
+        .hero { background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://source.unsplash.com/random/1600x900/?brazil,delivery'); background-size: cover; height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: #fff; }
+        .hero h1 { font-size: 2.5rem; margin: 0; }
 
         /* Produtos */
         .products { padding: 50px 0; }
         .section-title { text-align: center; margin-bottom: 40px; font-size: 2rem; color: var(--dark-color); }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; width: 90%; max-width: 1200px; margin: auto; }
         
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            width: 90%;
-            max-width: 1200px;
-            margin: auto;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
+        .product-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s ease; display: flex; flex-direction: column; }
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
 
-        /* --- CORREÇÃO DA IMAGEM AQUI --- */
-        .product-img {
-            width: 100%;
-            height: 250px; /* Mantém a altura fixa para alinhar os cards */
-            background-color: #fff; /* Fundo branco caso sobre espaço */
-            object-fit: contain; /* MÁGICA: Garante que a imagem inteira apareça sem esticar */
-            padding: 10px; /* Um pequeno respiro nas bordas */
-            box-sizing: border-box; /* Garante que o padding não aumente o tamanho total */
-        }
+        /* IMAGEM CORRIGIDA PARA NÃO ESTICAR */
+        .product-img { width: 100%; height: 250px; background-color: #fff; object-fit: contain; padding: 10px; box-sizing: border-box; }
 
         .product-info { padding: 20px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .product-info h3 { margin: 10px 0; font-size: 1.2rem; }
-        .product-info p { color: #666; font-size: 0.9rem; margin-bottom: 15px; }
-        
         .price { color: var(--primary-color); font-weight: 800; font-size: 1.5rem; margin-bottom: 15px; }
         
-        /* Botão de Compra Estilizado */
-        .buy-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 12px;
-            background: #25D366; /* Verde Zap */
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background 0.3s;
-            box-sizing: border-box;
-        }
+        .buy-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px; background: #25D366; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background 0.3s; box-sizing: border-box; }
         .buy-btn:hover { background: #128C7E; }
 
-        footer {
-            background: var(--dark-color);
-            color: #fff;
-            text-align: center;
-            padding: 30px;
-            margin-top: 60px;
-        }
+        footer { background: var(--dark-color); color: #fff; text-align: center; padding: 30px; margin-top: 60px; }
     </style>
 </head>
 <body>
-
     <header>
         <div class="container">
             <div class="logo">Drop<span>Nacional</span></div>
             <nav>
                 <ul>
-                    <li><a href="#">Início</a></li>
-                    <li><a href="#" class="whatsapp-btn-header">Fale Conosco</a></li>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="admin.html" style="color: #999; font-size: 0.8rem;">Área Admin</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
     <section class="hero">
-        <h1>Produtos a Pronta Entrega</h1>
-        <p>Receba em casa em poucos dias. Sem taxas de importação.</p>
+        <h1>Produtos Pronta Entrega</h1>
+        <p>Envio imediato para todo o Brasil.</p>
     </section>
 
     <section id="produtos" class="products">
         <h2 class="section-title">Destaques</h2>
-        
         <div class="product-grid" id="grid-produtos">
-            <p style="text-align:center; width:100%; font-size: 1.2rem; color: #777;">
-                Carregando ofertas...
-            </p>
+            <p style="text-align:center; width:100%; color: #777;">Carregando ofertas...</p>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2024 DropNacional. Todos os direitos reservados.</p>
+        <p>&copy; 2024 DropNacional.</p>
     </footer>
 
     <script type="module">
@@ -186,30 +90,26 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
         const productContainer = document.getElementById('grid-produtos');
 
         async function carregarProdutos() {
             try {
                 const querySnapshot = await getDocs(collection(db, "produtos"));
-                
                 productContainer.innerHTML = '';
 
                 if (querySnapshot.empty) {
-                    productContainer.innerHTML = `<p style="text-align:center; width:100%; padding: 20px;">Nenhum produto cadastrado no banco ainda.</p>`;
+                    productContainer.innerHTML = `<p style="text-align:center; width:100%">Nenhum produto cadastrado.</p>`;
                     return;
                 }
 
                 querySnapshot.forEach((doc) => {
                     const produto = doc.data();
 
-                    // --- SEU NÚMERO AQUI ---
+                    // --- ATENÇÃO: COLOQUE SEU NÚMERO AQUI ---
                     const seuNumero = "5511999999999"; 
                     
                     const mensagem = `Olá, vi o produto *${produto.nome}* no site por R$ ${produto.preco} e gostaria de comprar!`;
                     const linkZap = `https://wa.me/${seuNumero}?text=${encodeURIComponent(mensagem)}`;
-
-                    // Usei uma imagem de placeholder quadrada caso não tenha imagem no banco, para testar o layout
                     const imagemSrc = produto.imagem || 'https://via.placeholder.com/300x300?text=Sem+Foto';
 
                     const htmlProduto = `
@@ -218,27 +118,22 @@
                             <div class="product-info">
                                 <div>
                                     <h3>${produto.nome}</h3>
-                                    <p>${produto.descricao || 'Sem descrição'}</p>
+                                    <p>${produto.descricao || ''}</p>
                                 </div>
                                 <div>
                                     <div class="price">R$ ${produto.preco}</div>
-                                    <a href="${linkZap}" target="_blank" class="buy-btn">
-                                        Comprar no WhatsApp
-                                    </a>
+                                    <a href="${linkZap}" target="_blank" class="buy-btn">Comprar no WhatsApp</a>
                                 </div>
                             </div>
                         </div>
                     `;
-                    
                     productContainer.innerHTML += htmlProduto;
                 });
-
             } catch (error) {
                 console.error("Erro:", error);
-                productContainer.innerHTML = `<p style="color:red; text-align:center">Erro ao carregar produtos. Verifique o console.</p>`;
+                productContainer.innerHTML = `<p style="color:red; text-align:center">Erro ao carregar.</p>`;
             }
         }
-
         carregarProdutos();
     </script>
 </body>
